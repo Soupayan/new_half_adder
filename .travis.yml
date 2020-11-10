@@ -35,7 +35,7 @@ os:
 env:
   global:
     - RUST_BACKTRACE=1
-    - CRATES=fin_model,fin_data,fin_iex
+    # - CRATES=fin_model,fin_data,fin_iex
 
 jobs:
   # Performance tweak
@@ -73,13 +73,13 @@ jobs:
 # * adding '--all' for workspaces on build/test
 # * adding '--package' for workspaces on doc
 script:
-  - cargo build --verbose --all
-  - cargo test  --verbose --all
-  - |
-    for CRATE in ${CRATES//,/ }
-    do
-        cargo doc   --verbose --package $CRATE --no-deps
-    done
+  - cargo build --verbose
+  - cargo test  --verbose
+  # - |
+  #   for CRATE in ${CRATES//,/ }
+  #   do
+  #       cargo doc   --verbose --package $CRATE --no-deps
+  #   done
 
 # # Cargo/Crates integration
 # deploy:
