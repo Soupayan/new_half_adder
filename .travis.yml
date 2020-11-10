@@ -93,7 +93,7 @@ script:
 
 # Only initiate build on mainline branches
 branches:
-  only: master
+  only: main
 
 # Suppress at least some emails
 notifications:
