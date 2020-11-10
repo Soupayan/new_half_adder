@@ -21,65 +21,65 @@ cache: cargo
 
 # Channels and versions I want to build
 rust:
-- stable
-- beta
-- 1.34.0
-- nightly
+  - stable
+  - beta
+  - 1.34.0
+  - nightly
 
 # Operating systems I want to test
 os:
-- linux
-- osx
+  - linux
+  - osx
 
 # Set global environment only
 env:
   global:
-  - RUST_BACKTRACE=1
-  - CRATES=fin_model,fin_data,fin_iex
+    - RUST_BACKTRACE=1
+    - CRATES=fin_model,fin_data,fin_iex
 
-matrix:
+jobs:
   # Performance tweak
   fast_finish: true
   # Ignore failures in nightly, not ideal, but necessary
   allow_failures:
-  - rust: nightly
+    - rust: nightly
 
   # Only run the formatting check for stable
   include:
-  - name: 'Rust: format check'
-    rust: stable
-    install:
-    - rustup component add rustfmt
-    script:
-    - cargo fmt --verbose --all -- --check
+    - name: 'Rust: format check'
+      rust: stable
+      install:
+        - rustup component add rustfmt
+      script:
+        - cargo fmt --verbose --all -- --check
 
-    # Only run the style check for stable, if enabled
-  - name: 'Rust: style check'
-    if: env(ENABLE_CLIPPY) = 1
-    rust: stable
-    install:
-    - rustup component add clippy
-    script:
-    - cargo clippy --verbose --all -- -D warnings
+      # Only run the style check for stable, if enabled
+    - name: 'Rust: style check'
+      if: env(ENABLE_CLIPPY) = 1
+      rust: stable
+      install:
+        - rustup component add clippy
+      script:
+        - cargo clippy --verbose --all -- -D warnings
 
-    # Only run code coverage for stable
-  - name: 'Rust: code coverage'
-    rust: stable
-    os: linux
-    script:
-    - cargo tarpaulin --verbose --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
+      # Only run code coverage for stable
+    - name: 'Rust: code coverage'
+      rust: stable
+      os: linux
+      script:
+        - cargo tarpaulin --verbose --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
 
 # Custom script
 # * adding '--all' for workspaces on build/test
 # * adding '--package' for workspaces on doc
 script:
-- cargo build --verbose --all
-- cargo test  --verbose --all
-- |
-  for CRATE in ${CRATES//,/ }
-  do
-      cargo doc   --verbose --package $CRATE --no-deps
-  done
+  - cargo build --verbose --all
+  - cargo test  --verbose --all
+  - |
+    for CRATE in ${CRATES//,/ }
+    do
+        cargo doc   --verbose --package $CRATE --no-deps
+    done
 
 # # Cargo/Crates integration
 # deploy:
