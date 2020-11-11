@@ -30,6 +30,7 @@ rust:
 os:
   - linux
   - osx
+  - windows
 
 # Set global environment only
 env:
@@ -63,11 +64,11 @@ jobs:
         - cargo clippy --verbose --all -- -D warnings
 
       # Only run code coverage for stable
-    - name: 'Rust: code coverage'
-      rust: stable
-      os: linux
-      script:
-        - cargo tarpaulin --verbose --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
+    # - name: 'Rust: code coverage'
+    #   rust: stable
+    #   os: linux
+    #   script:
+    #     - cargo tarpaulin --verbose --ciserver travis-ci --coveralls $TRAVIS_JOB_ID
 
 # Custom script
 # * adding '--all' for workspaces on build/test
